@@ -7,21 +7,20 @@ from articles.models import Article, Tag, ArticleTag
 def articles_list(request):
     template = 'articles/news.html'
     news = []
-
     articles = Article.objects.all()
     article_tag = Article.objects.all().prefetch_related('tag', 'articletag'). \
         values_list('id', 'articletag__is_main', 'tag__tag')
 
-    for i in articles:
+    for article in articles:
         item = {
-            'title': i.title,
-            'text': i.text,
-            'published_at': i.published_at,
-            'image': i.image,
+            'title': article.title,
+            'text': article.text,
+            'published_at': article.published_at,
+            'image': article.image,
             'scopes': {'all': []}
         }
         for id in article_tag:
-            if i.id == id[0] and id[2] is not None:
+            if article.id == id[0] and id[2] is not None:
                 scopes = {
                     'is_main': id[1],
                     'topic': id[2]
@@ -30,7 +29,6 @@ def articles_list(request):
             else:
                 continue
         news.append(item)
-        print(item)
 
     context = {'object_list': news}
 

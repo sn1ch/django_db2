@@ -36,5 +36,3 @@ class ArticleTag(models.Model):
         verbose_name = 'Тематика статья'
         verbose_name_plural = 'Тематика статьи'
 
-    def __str__(self):
-        return self.article
