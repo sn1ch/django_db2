@@ -1,6 +1,5 @@
 from django.views.generic import ListView
 from django.shortcuts import render
-
 from articles.models import Article, Tag, ArticleTag
 
 
@@ -9,7 +8,7 @@ def articles_list(request):
     news = []
     articles = Article.objects.all()
     article_tag = Article.objects.all().prefetch_related('tag', 'articletag'). \
-        values_list('id', 'articletag__is_main', 'tag__tag')
+        values_list('id', 'articletag__is_main', 'tag__tag').order_by('-articletag__is_main', 'tag__tag')
 
     for article in articles:
         item = {
